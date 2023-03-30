@@ -43,7 +43,7 @@ export default function App() {
 	}
 
 	return (
-		<div className='grid content-start justify-center justify-items-center h-screen bg-veryDark'>
+		<div className='grid grid-rows-[auto_auto_1fr] justify-items-center h-screen bg-veryDark'>
 			<div className='absolute top-0 left-[50%] translate-x-[-50%] w-full flex justify-center'>
 				<img src={bgStars} alt='stars' />
 			</div>
@@ -62,7 +62,7 @@ export default function App() {
 					/>
 				))}
 			</div>
-			<div className='absolute lg:bottom-16 bottom-10 flex gap-10 z-10'>
+			<div className='flex self-end lg:mb-16 mb-10 gap-10 z-10'>
 				<a href='#' className='brand-link'>
 					<FontAwesomeIcon icon={faFacebookSquare} />
 				</a>
