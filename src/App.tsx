@@ -9,7 +9,6 @@ import {
 	faPinterest
 } from '@fortawesome/free-brands-svg-icons'
 import TimeItem from './TimeItem'
-import { pad } from './helpers'
 
 export default function App() {
 	const [time, setTime] = useState((8 * 24 + 23) * 60 * 60 + 55 * 60 + 41)
