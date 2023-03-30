@@ -6,6 +6,9 @@
 
 @layer components {
 	.timer-item {
-		@apply relative h-36 w-36 bg-darkBlue grid justify-between items-center grid-flow-col rounded-lg;
+		@apply relative lg:h-36 h-16 lg:w-36 w-16 bg-darkBlue grid justify-between items-center grid-flow-col rounded-lg;
+	}
+	.brand-link {
+		@apply cursor-pointer text-grayBlue hover:text-softRed text-3xl transition;
 	}
 }
