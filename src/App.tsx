@@ -9,25 +9,20 @@ import {
 	faPinterest
 } from '@fortawesome/free-brands-svg-icons'
 import TimeItem from './TimeItem'
+import {
+	getDays,
+	getHours,
+	getMinutes,
+	getSeconds,
+	getTimeInSeconds
+} from './helpers'
 
 export default function App() {
-	const [time, setTime] = useState((8 * 24 + 23) * 60 * 60 + 55 * 60 + 41)
-
-	const getDays = (time: number) => ~~(time / 86400)
-	const getHours = (time: number) => ~~((time - getDays(time) * 86400) / 3600)
-	const getMinutes = (time: number) =>
-		~~((time - getDays(time) * 86400 - getHours(time) * 3600) / 60)
-	const getSeconds = (time: number) =>
-		~~(
-			time -
-			getDays(time) * 86400 -
-			getHours(time) * 3600 -
-			getMinutes(time) * 60
-		)
+	const [seconds, setSeconds] = useState(getTimeInSeconds(8, 23, 55, 41))
 
 	useEffect(() => {
 		const interval = setInterval(() => {
-			if (time > 0) setTime(time => time - 1)
+			if (seconds > 0) setSeconds(seconds => seconds - 1)
 		}, 1000)
 
 		return () => {
@@ -36,10 +31,10 @@ export default function App() {
 	}, [])
 
 	const timeItems: Record<string, () => number> = {
-		days: () => getDays(time),
-		hours: () => getHours(time),
-		minutes: () => getMinutes(time),
-		seconds: () => getSeconds(time)
+		days: () => getDays(seconds),
+		hours: () => getHours(seconds),
+		minutes: () => getMinutes(seconds),
+		seconds: () => getSeconds(seconds)
 	}
 
 	return (
@@ -58,7 +53,7 @@ export default function App() {
 					<TimeItem
 						key={timeItem}
 						timeItem={timeItem}
-						getTimeItem={timeItems[timeItem]}
+						getTime={timeItems[timeItem]}
 					/>
 				))}
 			</div>
