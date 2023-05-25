@@ -1,19 +1,29 @@
-export const pad = (num: number) => num.toString().padStart(2, '0')
+const secondsInDay = 86400
+const secondsInHour = 3600
+const secondsInMinute = 60
 
-export const getDays = (time: number) => ~~(time / 86400)
+export const getDays = (totalSeconds: number) =>
+	Math.floor(totalSeconds / secondsInDay)
 
-export const getHours = (time: number) =>
-	~~((time - getDays(time) * 86400) / 3600)
+export const getHours = (totalSeconds: number) =>
+	Math.floor(
+		(totalSeconds - getDays(totalSeconds) * secondsInDay) / secondsInHour
+	)
 
-export const getMinutes = (time: number) =>
-	~~((time - getDays(time) * 86400 - getHours(time) * 3600) / 60)
+export const getMinutes = (totalSeconds: number) =>
+	Math.floor(
+		(totalSeconds -
+			getDays(totalSeconds) * secondsInDay -
+			getHours(totalSeconds) * secondsInHour) /
+			secondsInMinute
+	)
 
-export const getSeconds = (time: number) =>
-	~~(
-		time -
-		getDays(time) * 86400 -
-		getHours(time) * 3600 -
-		getMinutes(time) * 60
+export const getSeconds = (totalSeconds: number) =>
+	Math.floor(
+		totalSeconds -
+			getDays(totalSeconds) * secondsInDay -
+			getHours(totalSeconds) * secondsInHour -
+			getMinutes(totalSeconds) * secondsInMinute
 	)
 
 export const getTimeInSeconds = (
@@ -23,12 +33,16 @@ export const getTimeInSeconds = (
 	seconds?: number
 ) => {
 	if (!seconds) {
-		return daysOrHours * 3600 + hoursOrMinutes * 60 + minutesOrSeconds
+		return (
+			daysOrHours * secondsInHour +
+			hoursOrMinutes * secondsInMinute +
+			minutesOrSeconds
+		)
 	}
 	return (
-		daysOrHours * 86400 +
-		hoursOrMinutes * 3600 +
-		minutesOrSeconds * 60 +
+		daysOrHours * secondsInDay +
+		hoursOrMinutes * secondsInHour +
+		minutesOrSeconds * secondsInMinute +
 		seconds
 	)
 }

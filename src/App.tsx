@@ -1,73 +1,85 @@
 import { useEffect, useState } from 'react'
-import './App.css'
-import bgStars from './assets/images/bg-stars.svg'
-import patternHills from './assets/images/pattern-hills.svg'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
 	faFacebookSquare,
 	faInstagram,
-	faPinterest
+	faPinterest,
 } from '@fortawesome/free-brands-svg-icons'
-import TimeItem from './TimeItem'
+import TimeUnit from './TimeUnit'
 import {
 	getDays,
 	getHours,
 	getMinutes,
 	getSeconds,
-	getTimeInSeconds
+	getTimeInSeconds,
 } from './helpers'
 
 export default function App() {
-	const [seconds, setSeconds] = useState(getTimeInSeconds(8, 23, 55, 41))
+	const [totalSeconds, setTotalSeconds] = useState<number>(
+		getTimeInSeconds(8, 23, 55, 41)
+	)
 
 	useEffect(() => {
-		const interval = setInterval(() => {
-			if (seconds > 0) setSeconds(seconds => seconds - 1)
+		const launchingTimer = setInterval(() => {
+			if (totalSeconds > 0) {
+				setTotalSeconds(seconds => seconds - 1)
+			} else {
+				clearInterval(launchingTimer)
+			}
 		}, 1000)
 
 		return () => {
-			clearInterval(interval)
+			clearInterval(launchingTimer)
 		}
 	}, [])
 
-	const timeItems: Record<string, () => number> = {
-		days: () => getDays(seconds),
-		hours: () => getHours(seconds),
-		minutes: () => getMinutes(seconds),
-		seconds: () => getSeconds(seconds)
+	const timeUnitCounters: Record<string, () => number> = {
+		days: () => getDays(totalSeconds),
+		hours: () => getHours(totalSeconds),
+		minutes: () => getMinutes(totalSeconds),
+		seconds: () => getSeconds(totalSeconds),
 	}
 
 	return (
-		<div className='grid grid-rows-[auto_auto_1fr] justify-items-center h-screen bg-veryDark'>
-			<div className='absolute top-0 left-[50%] translate-x-[-50%] w-full flex justify-center'>
-				<img src={bgStars} alt='stars' />
-			</div>
-			<div className='absolute bottom-0 left-[50%] translate-x-[-50%] w-full flex justify-center'>
-				<img src={patternHills} alt='hills' />
-			</div>
-			<h1 className='text-white uppercase lg:text-2xl lg-text-lg tracking-[.4rem] lg:mt-40 mt-36 lg:w-full w-80 text-center'>
+		<main className='grid font-RedHatText grid-rows-[auto_auto_1fr] justify-items-center h-screen bg-veryDarkBlue bg-stars bg-no-repeat lg:bg-pos-desktop bg-pos-mobile'>
+			<h1 className='text-white uppercase lg:text-2xl text-lg lg:leading-normal leading-6 tracking-[.4rem] lg:mt-40 mt-[142px] lg:w-full w-80 text-center'>
 				we’re launching soon
 			</h1>
-			<div className='grid grid-flow-col lg:gap-8 gap-2 lg:mt-28 mt-16'>
-				{Object.keys(timeItems).map(timeItem => (
-					<TimeItem
-						key={timeItem}
-						timeItem={timeItem}
-						getTime={timeItems[timeItem]}
+			<div className='grid grid-flow-col lg:gap-x-8 gap-x-[17px] lg:mt-28 mt-[54px]'>
+				{Object.keys(timeUnitCounters).map(timeUnit => (
+					<TimeUnit
+						key={timeUnit}
+						label={timeUnit}
+						value={timeUnitCounters[timeUnit]()}
 					/>
 				))}
 			</div>
-			<div className='flex self-end lg:mb-16 mb-10 gap-10 z-10'>
-				<a href='#' className='brand-link'>
+			<div className='flex mt-auto lg:mb-16 mb-10 lg:gap-x-10 gap-x-8 z-10'>
+				<a
+					href='#'
+					target='_blank'
+					className='brand-icon'
+					aria-label='facebook'
+				>
 					<FontAwesomeIcon icon={faFacebookSquare} />
 				</a>
-				<a href='#' className='brand-link'>
+				<a
+					href='#'
+					target='_blank'
+					className='brand-icon'
+					aria-label='pinterest'
+				>
 					<FontAwesomeIcon icon={faPinterest} />
 				</a>
-				<a href='#' className='brand-link'>
+				<a
+					href='#'
+					target='_blank'
+					className='brand-icon'
+					aria-label='instagram'
+				>
 					<FontAwesomeIcon icon={faInstagram} />
 				</a>
 			</div>
-		</div>
+		</main>
 	)
 }
