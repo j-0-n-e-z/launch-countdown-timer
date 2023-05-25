@@ -46,3 +46,20 @@ export const getTimeInSeconds = (
 		seconds
 	)
 }
+
+export const timeUnits = ['days', 'hours', 'minutes', 'seconds'] as const
+export type TimeUnit = (typeof timeUnits)[number]
+
+export function getTimeUnitValue(timeUnit: TimeUnit, totalSeconds: number) {
+	switch (timeUnit) {
+		case 'days':
+			return getDays(totalSeconds)
+		case 'hours':
+			return getHours(totalSeconds)
+		case 'minutes':
+			return getMinutes(totalSeconds)
+		case 'seconds':
+		default:
+			return getSeconds(totalSeconds)
+	}
+}

@@ -6,13 +6,7 @@ import {
 	faPinterest,
 } from '@fortawesome/free-brands-svg-icons'
 import TimeUnit from './TimeUnit'
-import {
-	getDays,
-	getHours,
-	getMinutes,
-	getSeconds,
-	getTimeInSeconds,
-} from './helpers'
+import { getTimeInSeconds, getTimeUnitValue, timeUnits } from './helpers'
 
 export default function App() {
 	const [totalSeconds, setTotalSeconds] = useState<number>(
@@ -33,24 +27,17 @@ export default function App() {
 		}
 	}, [])
 
-	const timeUnitCounters: Record<string, () => number> = {
-		days: () => getDays(totalSeconds),
-		hours: () => getHours(totalSeconds),
-		minutes: () => getMinutes(totalSeconds),
-		seconds: () => getSeconds(totalSeconds),
-	}
-
 	return (
 		<main className='grid font-RedHatText grid-rows-[auto_auto_1fr] justify-items-center h-screen bg-veryDarkBlue bg-stars bg-no-repeat lg:bg-pos-desktop bg-pos-mobile'>
 			<h1 className='text-white uppercase lg:text-2xl text-lg lg:leading-normal leading-6 tracking-[.4rem] lg:mt-40 mt-[142px] lg:w-full w-80 text-center'>
 				we’re launching soon
 			</h1>
 			<div className='grid grid-flow-col lg:gap-x-8 gap-x-[17px] lg:mt-28 mt-[54px]'>
-				{Object.keys(timeUnitCounters).map(timeUnit => (
+				{timeUnits.map(timeUnit => (
 					<TimeUnit
 						key={timeUnit}
 						label={timeUnit}
-						value={timeUnitCounters[timeUnit]()}
+						value={getTimeUnitValue(timeUnit, totalSeconds)}
 					/>
 				))}
 			</div>
