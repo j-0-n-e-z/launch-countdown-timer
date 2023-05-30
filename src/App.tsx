@@ -1,10 +1,6 @@
 import { useEffect, useState } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import {
-	faFacebookSquare,
-	faInstagram,
-	faPinterest,
-} from '@fortawesome/free-brands-svg-icons'
+import { faFacebookSquare, faInstagram, faPinterest } from '@fortawesome/free-brands-svg-icons'
 import TimeUnit from './TimeUnit'
 import { TimeUnits, decrementTimeUnits, getTimeUnits } from './helpers'
 import Confetti from 'react-confetti'
@@ -17,32 +13,28 @@ export default function App() {
 
 	useEffect(() => {
 		if (!isTimeUp) {
-			setTimeout(
-				() => setTimeUnits(timeUnits => decrementTimeUnits(timeUnits)),
-				1000
-			)
+			setTimeout(() => setTimeUnits(decrementTimeUnits(timeUnits)), 1000)
 		} else {
 			setTimeout(() => setConfettiPiecesCount(0), 3000)
 		}
-	}, [timeUnits])
+	}, [timeUnits, isTimeUp])
 
 	return (
-		<main className='grid font-RedHatText grid-rows-[auto_auto_1fr] justify-items-center h-screen bg-veryDarkBlue bg-stars bg-no-repeat lg:bg-pos-desktop bg-pos-mobile'>
-			<h1 className='text-white uppercase lg:text-2xl text-lg lg:leading-normal leading-6 tracking-[.4rem] lg:mt-40 mt-[142px] lg:w-full w-80 text-center'>
+		<div className='grid h-screen grid-rows-[auto_auto_1fr] justify-items-center bg-veryDarkBlue bg-hills-and-stars bg-pos-mobile bg-no-repeat font-RedHatText lg:bg-pos-desktop'>
+			<h1 className='mt-[142px] w-80 text-center text-lg uppercase leading-6 tracking-[.4rem] text-white lg:mt-40 lg:w-full lg:text-2xl lg:leading-normal'>
 				we’re launching soon
 			</h1>
-			<div className='grid grid-flow-col lg:gap-x-8 gap-x-[17px] lg:mt-28 mt-[54px]'>
-				{(Object.keys(timeUnits) as Array<keyof typeof timeUnits>).map(
-					timeUnit => (
-						<TimeUnit
-							key={timeUnit}
-							label={timeUnit}
-							value={timeUnits[timeUnit]}
-						/>
-					)
-				)}
-			</div>
-			<div className='flex mt-auto lg:mb-16 mb-10 lg:gap-x-10 gap-x-8 z-10'>
+			<main className='mt-[54px] grid grid-flow-col gap-x-[17px] lg:mt-28 lg:gap-x-8'>
+				<h2 className='fixed scale-0'>Timer</h2>
+				{(Object.keys(timeUnits) as Array<keyof typeof timeUnits>).map(timeUnit => (
+					<TimeUnit
+						key={timeUnit}
+						label={timeUnit}
+						value={timeUnits[timeUnit]}
+					/>
+				))}
+			</main>
+			<footer className='z-10 mb-10 mt-auto flex gap-x-8 lg:mb-16 lg:gap-x-10'>
 				<a
 					href='#'
 					target='_blank'
@@ -67,8 +59,8 @@ export default function App() {
 				>
 					<FontAwesomeIcon icon={faInstagram} />
 				</a>
-			</div>
+			</footer>
 			{isTimeUp && <Confetti numberOfPieces={confettiPiecesCount} />}
-		</main>
+		</div>
 	)
 }

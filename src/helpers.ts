@@ -1,9 +1,4 @@
-export const getTimeUnits = (
-	days: number,
-	hours?: number,
-	minutes?: number,
-	seconds?: number
-) => {
+export const getTimeUnits = (days: number, hours?: number, minutes?: number, seconds?: number) => {
 	if (hours === undefined && minutes === undefined && seconds === undefined) {
 		;[days, hours, minutes, seconds] = [0, 0, 0, days]
 	}
@@ -29,25 +24,20 @@ export const getTimeUnits = (
 	}
 
 	if (seconds && (seconds < 0 || seconds > 59)) {
-		throw Error('Seconds count must be between 0 and 59')
+		throw Error('Seconds count must be between 0 and 59 inclusive')
 	}
 
 	return {
 		days,
 		hours: hours || 0,
 		minutes: minutes || 0,
-		seconds: seconds || 0,
+		seconds: seconds || 0
 	}
 }
 
 export type TimeUnits = ReturnType<typeof getTimeUnits>
 
-export function decrementTimeUnits({
-	days,
-	hours,
-	minutes,
-	seconds,
-}: TimeUnits): TimeUnits {
+export function decrementTimeUnits({ days, hours, minutes, seconds }: TimeUnits): TimeUnits {
 	if (seconds > 0) {
 		seconds--
 	} else {
