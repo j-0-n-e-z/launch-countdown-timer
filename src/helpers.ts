@@ -47,19 +47,13 @@ export const getTimeInSeconds = (
 	)
 }
 
-export const timeUnits = ['days', 'hours', 'minutes', 'seconds'] as const
-export type TimeUnit = (typeof timeUnits)[number]
+const createTimeUnits = <TimeUnit extends Record<string, (totalSeconds: number) => number>>(
+	timeUnit: TimeUnit
+) => timeUnit
 
-export function getTimeUnitValue(timeUnit: TimeUnit, totalSeconds: number) {
-	switch (timeUnit) {
-		case 'days':
-			return getDays(totalSeconds)
-		case 'hours':
-			return getHours(totalSeconds)
-		case 'minutes':
-			return getMinutes(totalSeconds)
-		case 'seconds':
-		default:
-			return getSeconds(totalSeconds)
-	}
-}
+export const timeUnits = createTimeUnits({
+	days: totalSeconds => getDays(totalSeconds),
+	hours: totalSeconds => getHours(totalSeconds),
+	minutes: totalSeconds => getMinutes(totalSeconds),
+	seconds: totalSeconds => getSeconds(totalSeconds),
+})

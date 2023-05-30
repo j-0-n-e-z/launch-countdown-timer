@@ -6,7 +6,7 @@ import {
 	faPinterest,
 } from '@fortawesome/free-brands-svg-icons'
 import TimeUnit from './TimeUnit'
-import { getTimeInSeconds, getTimeUnitValue, timeUnits } from './helpers'
+import { getTimeInSeconds, timeUnits } from './helpers'
 
 export default function App() {
 	const [totalSeconds, setTotalSeconds] = useState<number>(
@@ -14,18 +14,10 @@ export default function App() {
 	)
 
 	useEffect(() => {
-		const launchingTimer = setInterval(() => {
-			if (totalSeconds > 0) {
-				setTotalSeconds(seconds => seconds - 1)
-			} else {
-				clearInterval(launchingTimer)
-			}
-		}, 1000)
-
-		return () => {
-			clearInterval(launchingTimer)
+		if (totalSeconds > 0) {
+			setTimeout(() => setTotalSeconds(prev => prev - 1), 1000)
 		}
-	}, [])
+	}, [totalSeconds])
 
 	return (
 		<main className='grid font-RedHatText grid-rows-[auto_auto_1fr] justify-items-center h-screen bg-veryDarkBlue bg-stars bg-no-repeat lg:bg-pos-desktop bg-pos-mobile'>
@@ -33,13 +25,15 @@ export default function App() {
 				we’re launching soon
 			</h1>
 			<div className='grid grid-flow-col lg:gap-x-8 gap-x-[17px] lg:mt-28 mt-[54px]'>
-				{timeUnits.map(timeUnit => (
-					<TimeUnit
-						key={timeUnit}
-						label={timeUnit}
-						value={getTimeUnitValue(timeUnit, totalSeconds)}
-					/>
-				))}
+				{(Object.keys(timeUnits) as Array<keyof typeof timeUnits>).map(
+					timeUnit => (
+						<TimeUnit
+							key={timeUnit}
+							label={timeUnit}
+							value={timeUnits[timeUnit](totalSeconds)}
+						/>
+					)
+				)}
 			</div>
 			<div className='flex mt-auto lg:mb-16 mb-10 lg:gap-x-10 gap-x-8 z-10'>
 				<a
