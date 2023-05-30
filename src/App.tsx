@@ -6,18 +6,25 @@ import {
 	faPinterest,
 } from '@fortawesome/free-brands-svg-icons'
 import TimeUnit from './TimeUnit'
-import { getTimeInSeconds, timeUnits } from './helpers'
+import { decrementTimeUnits, getTimeUnits } from './helpers'
+import Confetti from 'react-confetti'
 
 export default function App() {
-	const [totalSeconds, setTotalSeconds] = useState<number>(
-		getTimeInSeconds(8, 23, 55, 41)
-	)
+	const [timeUnits, setTimeUnits] = useState(getTimeUnits(0, 10))
+	const [confettiPiecesCount, setConfettiPiecesCount] = useState(200)
+
+	const totalTime = Object.values(timeUnits).reduce((a, b) => a + b)
 
 	useEffect(() => {
-		if (totalSeconds > 0) {
-			setTimeout(() => setTotalSeconds(prev => prev - 1), 1000)
+		if (totalTime > 0) {
+			setTimeout(
+				() => setTimeUnits(timeUnits => decrementTimeUnits(timeUnits)),
+				1000
+			)
+		} else {
+			setTimeout(() => setConfettiPiecesCount(0), 3000)
 		}
-	}, [totalSeconds])
+	}, [timeUnits])
 
 	return (
 		<main className='grid font-RedHatText grid-rows-[auto_auto_1fr] justify-items-center h-screen bg-veryDarkBlue bg-stars bg-no-repeat lg:bg-pos-desktop bg-pos-mobile'>
@@ -30,7 +37,7 @@ export default function App() {
 						<TimeUnit
 							key={timeUnit}
 							label={timeUnit}
-							value={timeUnits[timeUnit](totalSeconds)}
+							value={timeUnits[timeUnit]}
 						/>
 					)
 				)}
@@ -61,6 +68,7 @@ export default function App() {
 					<FontAwesomeIcon icon={faInstagram} />
 				</a>
 			</div>
+			{totalTime === 0 && <Confetti numberOfPieces={confettiPiecesCount} />}
 		</main>
 	)
 }
