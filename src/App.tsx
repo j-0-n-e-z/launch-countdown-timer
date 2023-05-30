@@ -6,17 +6,17 @@ import {
 	faPinterest,
 } from '@fortawesome/free-brands-svg-icons'
 import TimeUnit from './TimeUnit'
-import { decrementTimeUnits, getTimeUnits } from './helpers'
+import { TimeUnits, decrementTimeUnits, getTimeUnits } from './helpers'
 import Confetti from 'react-confetti'
 
 export default function App() {
-	const [timeUnits, setTimeUnits] = useState(getTimeUnits(0, 10))
+	const [timeUnits, setTimeUnits] = useState<TimeUnits>(getTimeUnits(0, 10))
 	const [confettiPiecesCount, setConfettiPiecesCount] = useState(200)
 
-	const totalTime = Object.values(timeUnits).reduce((a, b) => a + b)
+	const isTimeUp = Object.values(timeUnits).reduce((a, b) => a + b) === 0
 
 	useEffect(() => {
-		if (totalTime > 0) {
+		if (!isTimeUp) {
 			setTimeout(
 				() => setTimeUnits(timeUnits => decrementTimeUnits(timeUnits)),
 				1000
@@ -68,7 +68,7 @@ export default function App() {
 					<FontAwesomeIcon icon={faInstagram} />
 				</a>
 			</div>
-			{totalTime === 0 && <Confetti numberOfPieces={confettiPiecesCount} />}
+			{isTimeUp && <Confetti numberOfPieces={confettiPiecesCount} />}
 		</main>
 	)
 }

@@ -40,7 +40,7 @@ export const getTimeUnits = (
 	}
 }
 
-type TimeUnits = ReturnType<typeof getTimeUnits>
+export type TimeUnits = ReturnType<typeof getTimeUnits>
 
 export function decrementTimeUnits({
 	days,
