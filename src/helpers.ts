@@ -11,19 +11,19 @@ export const getTimeUnits = (days: number, hours?: number, minutes?: number, sec
 		;[days, hours, minutes, seconds] = [0, days, hours, minutes]
 	}
 
-	if (days && (days < 0 || days > 364)) {
+	if (days !== undefined && (days < 0 || days > 364)) {
 		throw Error('Days count must be between 0 and 364 inclusive')
 	}
 
-	if (hours && (hours < 0 || hours > 23)) {
+	if (hours !== undefined && (hours < 0 || hours > 23)) {
 		throw Error('Hours count must be between 0 and 23 inclusive')
 	}
 
-	if (minutes && (minutes < 0 || minutes > 59)) {
+	if (minutes !== undefined && (minutes < 0 || minutes > 59)) {
 		throw Error('Minutes count must be between 0 and 59 inclusive')
 	}
 
-	if (seconds && (seconds < 0 || seconds > 59)) {
+	if (seconds !== undefined && (seconds < 0 || seconds > 59)) {
 		throw Error('Seconds count must be between 0 and 59 inclusive')
 	}
 
