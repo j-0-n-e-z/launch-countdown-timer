@@ -6,7 +6,7 @@ import { TimeUnits, decrementTimeUnits, getTimeUnits } from './helpers'
 import Confetti from 'react-confetti'
 
 export default function App() {
-	const [timeUnits, setTimeUnits] = useState<TimeUnits>(getTimeUnits(0, 10))
+	const [timeUnits, setTimeUnits] = useState<TimeUnits>(() => getTimeUnits(0, 10))
 	const [confettiPiecesCount, setConfettiPiecesCount] = useState(200)
 
 	const isTimeUp = Object.values(timeUnits).reduce((a, b) => a + b) === 0
